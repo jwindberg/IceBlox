@@ -846,9 +846,11 @@ class IceBloxGame(private val context: Context) {
         canvas.drawColor(Color.BLACK)
         paint.color = Color.WHITE
         paint.textSize = 20f
-        canvas.drawText("GAME OVER", 175f, 100f, paint)
-        canvas.drawText("You scored $score", 160f, 130f, paint)
-        canvas.drawBitmap(small[2], 190f, 150f, null)
+        paint.textAlign = Paint.Align.CENTER
+        canvas.drawText("GAME OVER", 195f, 100f, paint)
+        canvas.drawText("You scored $score", 195f, 130f, paint)
+        canvas.drawBitmap(small[2], 180f, 150f, null)
+        paint.textAlign = Paint.Align.LEFT
     }
     
     private fun drawGameOver(canvas: Canvas) {
