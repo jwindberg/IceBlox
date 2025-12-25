@@ -40,10 +40,10 @@ fun IceBloxGameScreen(viewModel: IceBloxViewModel = viewModel()) {
     val updateInterval = 100_000_000L // 100ms in nanoseconds (10 FPS like original)
     var triggerDraw by remember { mutableStateOf(0L) }
 
-    val lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     androidx.compose.runtime.DisposableEffect(lifecycleOwner) {
         val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
-            if (event == androidx.lifecycle.Lifecycle.Event.ON_PAUSE) {
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_PAUSE || event == androidx.lifecycle.Lifecycle.Event.ON_STOP) {
                 game.pause()
             } else if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
                 game.resume()

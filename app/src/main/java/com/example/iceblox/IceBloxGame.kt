@@ -153,16 +153,26 @@ class IceBloxGame(private val context: Context) {
 
     fun pause() {
         android.util.Log.d("IceBlox", "Game Paused")
-        if (sndTitle?.isPlaying == true) sndTitle?.pause()
-        if (sndMainGame?.isPlaying == true) sndMainGame?.pause()
-        soundPool?.autoPause()
+        try {
+            if (sndTitle?.isPlaying == true) sndTitle?.pause()
+            if (sndMainGame?.isPlaying == true) sndMainGame?.pause()
+            if (sndGameOver?.isPlaying == true) sndGameOver?.pause()
+            soundPool?.autoPause()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun resume() {
         android.util.Log.d("IceBlox", "Game Resumed. global state: $gameState")
-        if (gameState >= 7 && gameState <= 12 && sndTitle?.isPlaying == false) sndTitle?.start()
-        if (gameState == 2 && sndMainGame?.isPlaying == false) sndMainGame?.start()
-        soundPool?.autoResume()
+        try {
+            if (gameState >= 7 && gameState <= 12 && sndTitle?.isPlaying == false) sndTitle?.start()
+            if (gameState == 2 && sndMainGame?.isPlaying == false) sndMainGame?.start()
+            if (gameState == 6 && sndGameOver?.isPlaying == false) sndGameOver?.start()
+            soundPool?.autoResume()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun playSound(state: Int) {
