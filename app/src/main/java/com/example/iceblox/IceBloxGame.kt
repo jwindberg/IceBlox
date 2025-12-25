@@ -590,7 +590,7 @@ class IceBloxGame(private val context: Context) {
             if (lives < 0) {
                 gameState = 5
                 android.util.Log.d("IceBlox", "Skeleton killed player. Lives < 0. State=5")
-                playSound(5) // Restore Death Sound
+                // playSound(5) removed - already played in updatePenguin
                 counter = 0 
             } else {
                 actors = 1
