@@ -81,10 +81,10 @@ class IceBloxGame(private val context: Context) {
     private var sfxGameOver: Int = 0
     
     // Removed Legacy MediaPlayer vars
-    private var sndGameStart: android.media.MediaPlayer? = null 
-    private var sndLevelClear: android.media.MediaPlayer? = null
-    private var sndPlayerDown: android.media.MediaPlayer? = null
+    // sndGameStart, sndLevelClear, sndPlayerDown removed
+    // sndGameOver IS used (restored for long MP3 support)
     private var sndGameOver: android.media.MediaPlayer? = null
+    // streamGameOver removed
 
     init {
         initGame()
@@ -171,8 +171,10 @@ class IceBloxGame(private val context: Context) {
             when (state) {
                 7 -> { // Intro
                    // Clean up
-                   sndMainGame?.pause()
-                   sndMainGame?.seekTo(0)
+                   try { sndMainGame?.release() } catch(e:Exception){}
+                   sndMainGame = null
+                   try { sndGameOver?.release() } catch(e:Exception){}
+                   sndGameOver = null
                    
                    // Ensure Title is ready
                    if (sndTitle == null) {
@@ -183,6 +185,8 @@ class IceBloxGame(private val context: Context) {
                 0 -> { // Prepare (Start Game)
                     sndTitle?.pause()
                     sndTitle?.seekTo(0)
+                    try { sndGameOver?.release() } catch(e:Exception){}
+                    sndGameOver = null
                     // moved to state 1
                 }
                 1 -> { // Show Field (Maze forming)
@@ -241,7 +245,11 @@ class IceBloxGame(private val context: Context) {
                    android.util.Log.d("IceBlox", "Playing Game Over Sound")
                    try { sndMainGame?.release() } catch(e:Exception){}
                    sndMainGame = null
-                   soundPool?.play(sfxGameOver, 1.0f, 1.0f, 0, 0, 1.0f)
+                   
+                   // Use MediaPlayer for large file support
+                   try { sndGameOver?.release() } catch(e:Exception){}
+                   sndGameOver = android.media.MediaPlayer.create(context, R.raw.game_over).apply { isLooping = false }
+                   sndGameOver?.start()
                 }
             }
         } catch (e: Exception) {
@@ -635,18 +643,17 @@ class IceBloxGame(private val context: Context) {
     }
 
     private fun fixDeath() {
-        if (counter == 1) playSound(6) // Play immediately
-        if (counter > 10) { // Reduced Wait
-             gameState = 6
-             // playSound(6) moved up
-             counter = 0 // CRITICAL FIX: Reset counter so 'gameOver' waits properly
-        }
+        // Immediate Transition - No Waiting
+        gameState = 6
+        playSound(6)
+        counter = 0 
     }
 
     private fun gameOver() {
-        if (counter > 80) {
-            gameState = 7
-            playSound(7)
+        // Auto-return to title when sound finishes
+        if (sndGameOver?.isPlaying == false) {
+             gameState = 7
+             playSound(7)
         }
     }
 
@@ -963,7 +970,7 @@ class IceBloxGame(private val context: Context) {
 
     fun handleInput(newDir: Int) {
         // 0=None, 1=Left, 2=Right, 3=Up, 4=Down
-        if (gameState >= 7) {
+        if (gameState >= 6) {
             // Tap to start
             if (newDir != 0) { // Any press
                  gameState = 0 // SKIP Wait State (13) -> Go directly to Prepare (0)

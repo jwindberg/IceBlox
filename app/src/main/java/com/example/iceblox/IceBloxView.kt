@@ -76,7 +76,7 @@ fun IceBloxGameScreen() {
                     detectTapGestures(onTap = {
                         // Title screen: Tap to start
                         // Game: Tap to stop moving (set dir=0)
-                        if (game.gameState >= 7) {
+                        if (game.gameState >= 6) {
                              game.handleInput(1) // Start
                         } else {
                              game.handleInput(0) // Stop
