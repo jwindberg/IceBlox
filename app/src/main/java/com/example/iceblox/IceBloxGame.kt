@@ -635,9 +635,10 @@ class IceBloxGame(private val context: Context) {
     }
 
     private fun fixDeath() {
-        if (counter > 50) { // Wait a bit
+        if (counter == 1) playSound(6) // Play immediately
+        if (counter > 10) { // Reduced Wait
              gameState = 6
-             playSound(6)
+             // playSound(6) moved up
              counter = 0 // CRITICAL FIX: Reset counter so 'gameOver' waits properly
         }
     }
