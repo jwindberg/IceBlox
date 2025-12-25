@@ -28,12 +28,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlin.math.abs
 
 @Composable
-fun IceBloxGameScreen() {
+fun IceBloxGameScreen(viewModel: IceBloxViewModel = viewModel()) {
     val context = LocalContext.current
-    val game = remember { IceBloxGame(context) }
+    // val game = remember { IceBloxGame(context) } // Replaced by ViewModel
+    val game = viewModel.game
     var lastUpdate by remember { mutableStateOf(0L) }
     val updateInterval = 100_000_000L // 100ms in nanoseconds (10 FPS like original)
     var triggerDraw by remember { mutableStateOf(0L) }
