@@ -1,4 +1,4 @@
-package com.example.iceblox.ui.theme
+package com.marsraver.iceblox.ui.theme
 
 import android.app.Activity
 import android.os.Build

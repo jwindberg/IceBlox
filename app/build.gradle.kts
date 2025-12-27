@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.iceblox"
+    namespace = "com.marsraver.iceblox"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.example.iceblox"
+        applicationId = "com.marsraver.iceblox"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.example.iceblox
+package com.marsraver.iceblox
 
 import android.content.Context
 import android.graphics.Bitmap

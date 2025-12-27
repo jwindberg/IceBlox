@@ -1,4 +1,4 @@
-package com.example.iceblox
+package com.marsraver.iceblox
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
